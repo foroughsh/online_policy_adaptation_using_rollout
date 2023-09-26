@@ -7,3 +7,9 @@ The following figure shows our approach for policy adaptation in networked syste
 <p align="center">
 <img src="https://github.com/foroughsh/OnlinePolicyAdaptationUsingRollout/blob/main/online_policy_adaptation.png" width="500"/>
 </p>
+
+## Copyright and license
+
+<p>
+<a href="./LICENSE.md">Creative Commons (C) 2023-2024, Forough Shahabsamani, and Kim Hammar</a>
+</p>
