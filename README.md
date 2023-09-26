@@ -8,8 +8,47 @@ The following figure shows our approach for policy adaptation in networked syste
 <img src="https://github.com/foroughsh/OnlinePolicyAdaptationUsingRollout/blob/main/online_policy_adaptation.png" width="500"/>
 </p>
 
+## Requirements
+
+TODO
+
+## Development Requirements
+
+- Python 3.8+
+- `flake8` (for linting)
+- `tox` (for automated testing)
+
+
+## Installation
+
+```bash
+# install from pip
+pip install online_policy_adaptation_using_rollout==<version>
+# local install from source
+$ pip install -e online_policy_adaptation_using_rollout
+# or (equivalently):
+make install
+# force upgrade deps
+$ pip install -e online_policy_adaptation_using_rollout --upgrade
+# git clone and install from source
+git clone https://github.com/foroughsh/online_policy_adaptation_using_rollout
+cd online_policy_adaptation_using_rollout
+pip3 install -e .
+# Install development dependencies
+$ pip install -r requirements_dev.txt
+```
+
+## Run Experiments
+
+TODO
+
 ## Copyright and license
 
 <p>
 <a href="./LICENSE.md">Creative Commons (C) 2023-2024, Forough Shahabsamani, and Kim Hammar</a>
 </p>
+
+## Authors & Maintainers
+
+- Forough Shahabsamani <foro@kth.se>
+- Kim Hammar <kimham@kth.se>
