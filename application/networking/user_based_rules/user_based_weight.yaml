@@ -1,0 +1,30 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: computeinfo
+spec:
+  hosts:
+    - computeinfo
+  http:
+  - match:
+    - headers:
+        end-user:
+          exact: premium
+    route:
+    - destination:
+        host: computeinfo
+        subset: v1
+      weight: 0
+    - destination:
+        host: computeinfo
+        subset: v2
+      weight: 100
+  - route:
+    - destination:
+        host: computeinfo
+        subset: v1
+      weight: 0
+    - destination:
+        host: computeinfo
+        subset: v2
+      weight: 100
