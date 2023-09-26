@@ -1,0 +1,60 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: computeinfo
+  labels:
+    app: computeinfo
+    service: computeinfo
+spec:
+  ports:
+  - port: 9080
+    name: http
+  selector:
+    app: computeinfo
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: app-computeinfo
+  labels:
+    account: computeinfo
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: computeinfo-v2
+  labels:
+    app: computeinfo
+    version: v2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: computeinfo
+      version: v2
+  template:
+    metadata:
+      labels:
+        app: computeinfo
+        version: v2
+    spec:
+      serviceAccountName: app-computeinfo
+      containers:
+      - name: computeinfo2
+        image: docker.io/foroughsh/compute_info_2_3:v1
+        resources:
+          requests:
+            cpu: "5000m"
+          limits:
+            cpu: "5500m"
+        env:
+          - name: MONGO_DB_URL
+            value: mongodb://x.x.x.x:30051/admin #ip of the master node
+        ports:
+        - containerPort: 9080
+        securityContext:
+          runAsUser: 1000
+      imagePullSecrets:
+      - name: regcred
+---

@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cinfo-mongodb2
+  labels:
+    app: cinfo-mongodb2
+    service: cinfo-mongodb2
+
+spec:
+  selector:
+    app: cinfo-mongodb2
+  type: NodePort
+  ports:
+    - port: 27018
+      targetPort: 27017
+      nodePort: 30051
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cinfo-mongodb-v2
+  labels:
+    app: cinfo-mongodb2
+    version: v2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cinfo-mongodb2
+      version: v2
+  template:
+    metadata:
+      labels:
+        app: cinfo-mongodb2
+        version: v2
+    spec:
+      containers:
+      - name: cinfo-mongodb2
+        image: docker.io/foroughsh/monogdb_collections_3:v1
+        #imagePullPolicy: Never
+        ports:
+        - containerPort: 27017
+        volumeMounts:
+        - name: data-db
+          mountPath: /data/db
+      imagePullSecrets:
+      - name: regcred
+      volumes:
+      - name: data-db
+        emptyDir: {}
+---

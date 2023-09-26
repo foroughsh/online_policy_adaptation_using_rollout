@@ -1,0 +1,40 @@
+##################################################################################################
+# Compute info service
+##################################################################################################
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: computeinfo-v1
+  labels:
+    app: computeinfo
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: computeinfo
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: computeinfo
+        version: v1
+    spec:
+      containers:
+      - name: computeinfo
+        image: docker.io/foroughsh/compute_info_1_5:v1
+        resources:
+          requests:
+            cpu: "1000m"
+          limits:
+            cpu: "1000m"
+        env:
+          - name: MONGO_DB_URL
+            value: mongodb://x.x.x.x:30050/admin #ip of the master node
+        ports:
+        - containerPort: 9080
+        securityContext:
+          runAsUser: 1000
+      imagePullSecrets:
+      - name: regcred

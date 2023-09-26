@@ -1,0 +1,61 @@
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: computeinfofront
+  labels:
+    app: computeinfofront
+    service: computeinfofront
+
+spec:
+  selector:
+    app: computeinfofront
+  type: NodePort
+  ports:
+    - port: 9080
+      targetPort: 9080
+      nodePort: 30048
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: app-computeinfofront
+  labels:
+    account: computeinfofront
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: computeinfofront-v1
+  labels:
+    app: computeinfofront
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: computeinfofront
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: computeinfofront
+        version: v1
+    spec:
+      serviceAccountName: app-computeinfofront
+      containers:
+      - name: cinfofront
+        image: docker.io/foroughsh/front_compute_info_2:v1
+        ports:
+        - containerPort: 9080
+        volumeMounts:
+        - name: tmp
+          mountPath: /tmp
+        securityContext:
+          runAsUser: 1000
+      imagePullSecrets:
+      - name: regcred
+      volumes:
+      - name: tmp
+        emptyDir: {}
