@@ -10,7 +10,6 @@ __pychache__
 */*.log
 
 *.log
-*.csv
 
 */videos/*
 */gifs/*
