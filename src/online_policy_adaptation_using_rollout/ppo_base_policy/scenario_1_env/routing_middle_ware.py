@@ -38,8 +38,8 @@ def action_to_next_config(actions, configurations):
 
 class RoutingMiddleWare():
 
-    def __init__(self):
-        self.path = "/Users/foro/PycharmProjects/NOMS2024/data/"
+    def __init__(self, system_model_path):
+        self.path = system_model_path
         self.delay_model = joblib.load(self.path + "delays_RF_model.joblib")
         self.state_size = 4
         self.state = np.zeros(self.state_size, dtype=float)

@@ -7,20 +7,19 @@ from stable_baselines3.common.callbacks import BaseCallback
 import time
 from sb3_contrib import MaskablePPO
 from sb3_contrib.common.maskable.utils import get_action_masks
-import sys
-import argparse
 
 ########## To train the agent for different scenarios, just import the environment for that scenario.
 # Please note that for when we load the gym env in the main function we need to revise the version numbre based on the scenario number.
-from ppo_base_policy.scenario_3_env.routing_env import RoutingEnv
-
+from online_policy_adaptation_using_rollout.ppo_base_policy.scenario_1_env.routing_env import RoutingEnv
+from online_policy_adaptation_using_rollout.ppo_base_policy.scenario_2_env.routing_env import RoutingEnv
+from online_policy_adaptation_using_rollout.ppo_base_policy.scenario_3_env.routing_env import RoutingEnv
 class CustomCallback(BaseCallback):
     """
     A custom callback that derives from ``BaseCallback``.
 
     :param verbose: (int) Verbosity level 0: not output 1: info 2: debug
     """
-    def __init__(self, seed: int, env, path_to_models, path_to_results, verbose=0, eval_every: int = 200):
+    def __init__(self, seed: int, model, env, path_to_models, path_to_results, verbose=0, eval_every: int = 200):
         super(CustomCallback, self).__init__(verbose)
         self.iter = 0
         self.eval_every = eval_every
@@ -28,6 +27,7 @@ class CustomCallback(BaseCallback):
         self.env = env
         self.path_to_models = path_to_models
         self.path_to_results = path_to_results
+        self.model = model
 
     def _on_training_start(self) -> None:
         """
@@ -62,7 +62,6 @@ class CustomCallback(BaseCallback):
         if (self.iter+1) % self.eval_every == 0:
             start = time.time()
             state = self.env.reset()
-            state = self.env.reset_to_specific_state(0.4,5)
             s = state
             N = 1
             max_horizon = 7
@@ -78,7 +77,7 @@ class CustomCallback(BaseCallback):
                     print("state: ", s)
                     action_masks = get_action_masks(self.env)
                     print("action_mask:", action_masks)
-                    a, _ = model.predict(s, deterministic=True, action_masks=action_masks)
+                    a, _ = self.model.predict(s, deterministic=True, action_masks=action_masks)
                     print("current action for ",s," is ", a)
                     state_actions.append((s, a))
                     s, r, done, info = self.env.step(a)
@@ -106,7 +105,7 @@ class CustomCallback(BaseCallback):
             print(f"[EVAL] Training time: {end-start}")
 
         if self.iter % (self.eval_every*1) == 0:
-            model.save(self.path_to_models + "self_routing_" + str(self.seed)+"_"+ str(self.iter))
+            self.model.save(self.path_to_models + "self_routing_" + str(self.seed)+"_"+ str(self.iter))
         self.iter += 1
 
     def _on_training_end(self) -> None:
@@ -115,88 +114,55 @@ class CustomCallback(BaseCallback):
         """
         pass
 
-if __name__ == '__main__':
+class PPOBase():
 
-    # For other senarios the version of the environment is different.
-    eval_env = gym.make("routing-env-v3")
-    env = gym.make("routing-env-v3")
-    env = Monitor(env)
-    env.reset()
+    def __init__(self,environment_name, path_to_system_model, num_neurons_per_hidden_layer, num_layers, seed, path_to_save_models,
+                 path_to_save_results, verbose, steps_between_updates, batch_size, learning_rate, gamma, ent_coef,
+                 clip_range, num_training_timesteps, device):
+        self.environment_name = environment_name
+        self.path_to_system_model = path_to_system_model
+        self.num_neurons_per_hidden_layer = num_neurons_per_hidden_layer
+        self.num_layers = num_layers
+        self.seed = seed
+        self.path_to_save_models = path_to_save_models
+        self.path_to_save_results = path_to_save_results
+        self.verbose = verbose
+        self.steps_between_updates = steps_between_updates
+        self.batch_size = batch_size
+        self.learning_rate = learning_rate
+        self.gamma = gamma
+        self.ent_coef = ent_coef
+        self.clip_range = clip_range
+        self.num_training_timesteps = num_training_timesteps
+        self.device = device
 
-    action_masks = get_action_masks(env)
+    def train_ppo_base(self):
+        # For other senarios the version of the environment is different.
+        eval_env = gym.make(self.environment_name, path_to_system_model=self.path_to_system_model)
+        env = gym.make(self.environment_name, path_to_system_model=self.path_to_system_model)
+        env = Monitor(env)
+        env.reset()
 
-    args = sys.argv
+        action_masks = get_action_masks(env)
+        # Hparams
+        policy_kwargs = dict(net_arch=[self.num_neurons_per_hidden_layer] * self.num_layers)
 
-    parser = argparse.ArgumentParser(description='Please check the code for options!')
-    parser.add_argument("--seed", type=int, default=83)
-    parser.add_argument("--target_path_for_models", type=str, default="../../trained_models/scenario_2/")
-    parser.add_argument("--target_path_to_save_results", type=str, default="../../artifacts/scenario_2/")
-    parser.add_argument("--num_neurons_per_hidden_layer", type=int, default=128)
-    parser.add_argument("--num_layers", type=int, default=3)
-    parser.add_argument("--steps_between_updates", type=int, default=512)
-    parser.add_argument("--learning_rate", type=float, default=0.0005)
-    parser.add_argument("--batch_size", type=int, default=64)
-    parser.add_argument("--device", type=str, default="cpu")
-    parser.add_argument("--gamma", type=float, default=0.99)
-    parser.add_argument("--num_training_timesteps", type=int, default=1000000)
-    parser.add_argument("--verbose", type=int, default=0)
-    parser.add_argument("--ent_coef", type=float, default=0.05)
-    parser.add_argument("--clip_range", type=float, default=0.2)
+        # Set seed for reproducibility
+        random.seed(self.seed)
+        np.random.seed(self.seed)
+        torch.manual_seed(self.seed)
 
-    args = parser.parse_args()
+        # Train
+        model = MaskablePPO("MlpPolicy", env, verbose=self.verbose,
+                    policy_kwargs=policy_kwargs, n_steps=self.steps_between_updates,
+                    batch_size=self.batch_size, learning_rate=self.learning_rate, seed=self.seed,
+                    device=self.device, gamma=self.gamma, ent_coef=self.ent_coef, clip_range=self.clip_range)
 
-    path_to_save_results = args.target_path_to_save_results
-    path_to_save_models = args.target_path_for_models
+        cb = CustomCallback(seed=self.seed, env=eval_env, model=model, path_to_models=self.path_to_save_models,
+                            path_to_results=self.path_to_save_results, eval_every=2)
 
-    seed = args.seed
-    num_neurons_per_hidden_layer = args.num_neurons_per_hidden_layer
-    num_layers = args.num_layers
-    steps_between_updates = args.steps_between_updates
-    learning_rate = args.learning_rate
-    batch_size = args.batch_size
-    device = args.device
-    gamma = args.gamma
-    num_training_timesteps = args.num_training_timesteps
-    verbose = args.verbose
-    ent_coef = args.ent_coef
-    clip_range = args.clip_range
+        start = time.time()
+        model.learn(total_timesteps=self.num_training_timesteps, callback=cb)
+        end = time.time()
 
-    print(
-        "You can update the parameters by invoking function with the following options: \n"
-        "\t--seed 83\n"
-        "\t--target_path_for_models ../../trained_models/scenario_2/\n"
-        "\t--target_path_to_save_results ../../artifacts/scenario_2/\n"
-        "\t--num_neurons_per_hidden_layer 128\n"
-        "\t--num_layers 3\n"
-        "\t--steps_between_updates 512\n"
-        "\t--learning_rate 0.0005\n"
-        "\t--batch_size 64\n"
-        "\t--device cpu\n"
-        "\t--gamma 0.99\n"
-        "\t--num_training_timesteps 1000000"
-        "\t--verbose 0\n"
-        "\t--ent_coef 0.05\n"
-        "\t--clip_range 0.2"
-    )
-
-    # Hparams
-    policy_kwargs = dict(net_arch=[num_neurons_per_hidden_layer] * num_layers)
-
-    # Set seed for reproducibility
-    random.seed(seed)
-    np.random.seed(seed)
-    torch.manual_seed(seed)
-
-    cb = CustomCallback(seed=seed, env=eval_env, path_to_models=path_to_save_models,
-                        path_to_results=path_to_save_results, eval_every=2)
-
-    # Train
-    model = MaskablePPO("MlpPolicy", env, verbose=verbose,
-                policy_kwargs=policy_kwargs, n_steps=steps_between_updates,
-                batch_size=batch_size, learning_rate=learning_rate, seed=seed,
-                device="cpu", gamma=gamma, ent_coef=ent_coef, clip_range=clip_range)
-    start = time.time()
-    model.learn(total_timesteps=num_training_timesteps, callback=cb)
-    end = time.time()
-
-    print("Training time: ", end - start)
+        return end-start

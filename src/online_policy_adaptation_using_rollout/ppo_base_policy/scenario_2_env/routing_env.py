@@ -1,10 +1,9 @@
-import random
 from typing import Tuple
 import gym
 import numpy as np
-from ppo_base_policy.scenario_2_env.routing_middle_ware import RoutingMiddleWare
+from online_policy_adaptation_using_rollout.ppo_base_policy.scenario_2_env.routing_middle_ware import RoutingMiddleWare
 from typing import List
-path = "./"
+path = "/"
 
 THERESHOL_D1 = 0.12
 
@@ -20,12 +19,13 @@ def reward_function(d1, cpu1,p):
 
 class RoutingEnv(gym.Env):
 
-    def __init__(self):
+    def __init__(self, path_to_system_model):
         self.observation_space = gym.spaces.Box(low=np.array([0, 0]), dtype=np.float32,
                                                 high=np.array([1, 5]),
                                                 shape=(2,))
         self.action_space = gym.spaces.MultiDiscrete([3,3])
-        self.middleware = RoutingMiddleWare()
+        self.path_to_system_model = path_to_system_model
+        self.middleware = RoutingMiddleWare(self.path_to_system_model)
 
         self.l1 = 5
         self.cl1 = self.l1

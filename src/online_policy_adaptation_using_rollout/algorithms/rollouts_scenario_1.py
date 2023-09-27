@@ -6,7 +6,7 @@ import numpy as np
 from sb3_contrib import MaskablePPO
 from sb3_contrib.common.maskable.utils import get_action_masks
 from policy_iteration_scenario_1 import policy_evaluation
-from system_model.system_model_scenario_1 import (
+from online_policy_adaptation_using_rollout.system_model.system_model_scenario_1 import (
     transition_function, reward_function, convert_dp_s_to_env_s, convert_env_a_to_dp_a)
 
 

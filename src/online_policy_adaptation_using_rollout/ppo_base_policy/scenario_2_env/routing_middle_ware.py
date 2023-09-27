@@ -38,13 +38,10 @@ def action_to_next_config(actions, configurations):
 
 class RoutingMiddleWare():
 
-    def __init__(self):
-        self.path = "/Users/foro/PycharmProjects/NOMS2024_rollouts/s6/system_model/"
-        try:
-            self.delay_model = joblib.load(self.path + "system_model.joblib")
-        except:
-            self.delay_model = joblib.load("/Users/kimham/Dropbox/NOMS24/SC1/delays_RF_model.joblib")
-        self.state_size = 3
+    def __init__(self, path_to_system_model):
+        self.path = path_to_system_model
+        self.delay_model = joblib.load(self.path + "system_model.joblib")
+        self.state_size = 2
         self.state = np.zeros(self.state_size, dtype=float)
         ######actions#######################
         self.cpu1 = 1
@@ -53,11 +50,11 @@ class RoutingMiddleWare():
         self.cl1 = self.l1
         self.b1 = 0
         #######initial response times##############
+        #### feature order in our system model: ["c1", "p11", "l1", "cl1"]
         [self.d1] = self.delay_model.predict([[self.cpu1, self.p1, self.l1, self.cl1]])
         #######state######################
-        self.state[0] = self.l1
-        self.state[1] = self.p1
-        self.state[2] = self.cpu1
+        self.state[0] = self.p1
+        self.state[1] = self.cpu1
 
         self.state_counter = 0
         self.LD_counter = 0
@@ -71,20 +68,13 @@ class RoutingMiddleWare():
         new_configuration = action_to_next_config(action, configuration)
         self.p1 = new_configuration[0]
         self.cpu1 = new_configuration[1]
-        random_number = random.random()
-        if (self.LD_counter)%20==0:
-            if random_number<0.33:
-                self.l1 = 5
-            elif random_number<0.66:
-                self.l1 = 10
-            else:
-                self.l1 = 15
+
         self.cl1 = self.l1
+
         [self.d1] = self.delay_model.predict([[self.cpu1, self.p1, self.l1, self.cl1]])
 
-        self.state[0] = self.l1
-        self.state[1] = self.p1
-        self.state[2] = self.cpu1
+        self.state[0] = self.p1
+        self.state[1] = self.cpu1
 
         self.state_counter += 1
         self.LD_counter += 1
@@ -92,6 +82,8 @@ class RoutingMiddleWare():
 
     def reset(self):
 
+        self.state_counter = 0
+        self.l1 = 5
         self.cl1 = self.l1
 
         self.p1 = random.randint(0, 1) / 5
@@ -101,39 +93,36 @@ class RoutingMiddleWare():
         [self.d1] = self.delay_model.predict(
             [[self.cpu1, self.p1, self.l1, self.cl1]])
 
-        self.state[0] = self.l1
-        self.state[1] = self.p1
-        self.state[2] = self.cpu1
+        self.state[0] = self.p1
+        self.state[1] = self.cpu1
 
         return self.state
 
-    def reset_to_specific_state(self, l1, p1, c1):
-        self.LD_counter = 1
+    def reset_to_specific_state(self, p1, c1):
+        self.state_counter = 0
         self.cpu1 = c1
         self.p1 = p1
-        self.l1 = l1
+        self.l1 = 5
         self.cl1 = self.l1
 
         #######initial response times##############
         [self.d1] = self.delay_model.predict(
             [[self.cpu1, self.p1, self.l1, self.cl1]])
         #######state######################
-        self.state[0] = self.l1
-        self.state[1] = self.p1
-        self.state[2] = self.cpu1
+        self.state[0] = self.p1
+        self.state[1] = self.cpu1
 
         return self.state
 
-    def set_state(self, l1, p1, cpu1):
-        self.state = [l1, p1, cpu1]
+    def set_state(self, p1, cpu1):
+        self.state = [p1, cpu1]
         self.p1 = p1
         self.cpu1 = cpu1
-        self.l1 = l1
         return self.state
 
 # test_routing = RoutingMiddleWare()
-# for i in range(0,20):
+# for i in range(0,10):
 #     print("State before the action: ", test_routing.state)
-#     action = [random.randint(0,2),random.randint(0,2)]
-#     state, d1= test_routing.read_state_from_system(action)
-#     print(action,state, d1)
+#     action = [0,1,2,1]
+#     state, d1, d2= test_routing.read_state_from_system(action)
+#     print(action,state, d1, d2)

@@ -1,10 +1,10 @@
 from typing import Tuple
 import gym
 import numpy as np
-from ppo_base_policy.scenario_1_env.routing_middle_ware import RoutingMiddleWare
+from online_policy_adaptation_using_rollout.ppo_base_policy.scenario_1_env.routing_middle_ware import RoutingMiddleWare
 from typing import List
 
-path = "./"
+path = "/"
 
 THERESHOL_D1 = 0.95
 THERESHOL_D2 = 0.115
@@ -20,12 +20,14 @@ def reward_function(d1, d2, cpu1, cpu2, p1, p2):
 
 class RoutingEnv(gym.Env):
 
-    def __init__(self):
+    def __init__(self, path_to_system_model):
+        self.path_to_system_model = path_to_system_model
         self.observation_space = gym.spaces.Box(low=np.array([0, 0, 0, 0]), dtype=np.float32,
                                                 high=np.array([1, 1, 5000, 5000]),
                                                 shape=(4,))
         self.action_space = gym.spaces.MultiDiscrete([3,3,3,3])
-        self.middleware = RoutingMiddleWare()
+
+        self.middleware = RoutingMiddleWare(self.path_to_system_model)
 
         self.l1 = 4
         self.cl1 = 4
@@ -74,6 +76,7 @@ class RoutingEnv(gym.Env):
             mask4 = [1, 1, 1]
         mask = [mask1, mask2, mask3, mask4]
         return mask
+
 
     def step(self, a: gym.spaces.MultiDiscrete) -> Tuple[np.ndarray, int, bool, dict]:
         info = {}
