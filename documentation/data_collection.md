@@ -6,7 +6,7 @@ $$s_{t+1} \triangleq f(s_t, a_t, w_t, t) \ \ t=1,2,... $$
 where $f$ is a Markovian system model, $w_t \in \mathcal{W}$ is a random disturbance, and $a_t$ is the control action at time $t$, which is defined as
 
 ```math
-a_t \triangleq ((a^{(p)}_{(j,k),i,t}, a^{(b)}_{i,t}, a^{(c)}_{j,t}))_{i \in \mathscr{S}, (j,k) \in \mathcal{E}, k,j \in \mathcal{V}}```
+a_t \triangleq ((a^{(p)}_{(j,k),i,t}, a^{(b)}_{i,t}, a^{(c)}_{j,t}))_{i \in \mathscr{S}, (j,k) \in \mathcal{E}, k,j \in \mathcal{V}} math```
 
 where
 $$a^{(p)}_{(j,k),i,t} \in \{-\Delta_p, 0, \Delta_p\}$$
