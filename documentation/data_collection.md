@@ -1,11 +1,11 @@
 # Data collection on the testbed to learn the system model
 
 One of the important steps in our framework is the learning model. The system model is a function that maps the current state of the system and the control action to the next state.
-$
+$$
 \begin{align}
 s_{t+1} &\triangleq f(s_t, a_t, w_t, t) && t=1,2,\hdots \label{eq:dynamics_def}
 \end{align}
-$
+$$
 
 where $f$ is a Markovian system model (\ref{eq:system_model_base}), $w_t \in \mathcal{W}$ is a random disturbance, and $a_t$ is the control action at time $t$, which is defined as
 \begin{align}
