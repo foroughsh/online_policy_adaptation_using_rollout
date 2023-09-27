@@ -127,8 +127,8 @@ if __name__ == '__main__':
     if (len(args) > 1):
         parser = argparse.ArgumentParser(description='Please check the code for options!')
         parser.add_argument("--seed", type=int, default=83)
-        parser.add_argument("--target_path_for_models", type=str, default="../../../../trained_models/scenario_2/")
-        parser.add_argument("--target_path_to_save_results", type=str, default="../../../../artifacts/scenario_2/")
+        parser.add_argument("--target_path_for_models", type=str, default="../../trained_models/scenario_2/")
+        parser.add_argument("--target_path_to_save_results", type=str, default="../../artifacts/scenario_2/")
         parser.add_argument("--num_neurons_per_hidden_layer", type=int, default=128)
         parser.add_argument("--num_layers", type=int, default=3)
         parser.add_argument("--steps_between_updates", type=int, default=512)
