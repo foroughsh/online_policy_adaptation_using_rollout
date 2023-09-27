@@ -1,7 +1,7 @@
 import sys
 import argparse
 from online_policy_adaptation_using_rollout.ppo_base_policy.training_ppo_agent import PPOBase
-from online_policy_adaptation_using_rollout.evaluation.evaluation_using_base_policy import EvaluateBasePolicy
+from online_policy_adaptation_using_rollout.evaluation.evaluation import EvaluateBasePolicy
 
 if __name__ == '__main__':
 
