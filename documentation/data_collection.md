@@ -1,12 +1,12 @@
 # Data collection on the testbed to learn the system model
 
 One of the important steps in our framework is the learning model. The system model is a function that maps the current state of the system and the control action to the next state.
-$$s_{t+1} \triangleq f(s_t, a_t, w_t, t) \ \ t=1,2,\hdots $$
+$$s_{t+1} \triangleq f(s_t, a_t, w_t, t) \ \ t=1,2,... $$
 
-where $f$ is a Markovian system model (\ref{eq:system_model_base}), $w_t \in \mathcal{W}$ is a random disturbance, and $a_t$ is the control action at time $t$, which is defined as
-\begin{align}
-a_t &\triangleq ((a^{(p)}_{(j,k),i,t}, a^{(b)}_{i,t}, a^{(c)}_{j,t}))_{i \in \mathscr{S}, (j,k) \in \mathcal{E}, k,j \in \mathcal{V}}\label{eq:action_def}
-\end{align}
+where $f$ is a Markovian system model, $w_t \in \mathcal{W}$ is a random disturbance, and $a_t$ is the control action at time $t$, which is defined as
+$$
+a_t \triangleq ((a^{(p)}_{(j,k),i,t}, a^{(b)}_{i,t}, a^{(c)}_{j,t}))_{i \in \mathscr{S}, (j,k) \in \mathcal{E}, k,j \in \mathcal{V}}
+$$
 where $a^{(p)}_{(j,k),i,t} \in \{-\Delta_p, 0, \Delta_p\}$ indicates the change in routing weight for edge $(j,k)$ and service $S_i$, $a^{(b)}_{i,t} \in \{-\Delta_b, 0, \Delta_b\}$ indicates the change in blocking rate for service $S_i$, and $a^{(c)}_{j,t} \in \{-\Delta_c,0,\Delta_c\}$ indicates the change in allocated CPU cores for node $j$.
 
 Given (\ref{eq:action_def}), the system model (\ref{eq:dynamics_def}) can be stated more explicitly as
