@@ -165,8 +165,8 @@ if __name__ == '__main__':
         print(
             "Please enter the seed and other arguments. The list of options are as the following:\n"
             "\t--seed 83\n"
-            "\t--target_path_for_models ../../../../trained_models/scenario_2/\n"
-            "\t--target_path_to_save_results ../../../../artifacts/scenario_2/\n"
+            "\t--target_path_for_models ../../trained_models/scenario_2/\n"
+            "\t--target_path_to_save_results ../../artifacts/scenario_2/\n"
             "\t--num_neurons_per_hidden_layer 128\n"
             "\t--num_layers 3\n"
             "\t--steps_between_updates 512\n"
