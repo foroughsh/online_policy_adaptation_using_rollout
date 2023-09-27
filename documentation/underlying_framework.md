@@ -3,7 +3,7 @@
 The structure of this framework is shown in the Figure below.
 
 <p align="center">
-<img src="https://github.com/foroughsh/dynamically_meeting_performace_objectives_framework/blob/9eb9dc8e04de3e4e9bbeb1c1f3fca135abab6149/framework_small.png" width="500"/>
+<img src="https://github.com/foroughsh/online_policy_adaptation_using_rollout/blob/main/documentation/images/framework.png" width="500"/>
 </p>
 
 As is shown in this figure, to learn the effective policy on this framework efficiently, we take the following 6 steps:
