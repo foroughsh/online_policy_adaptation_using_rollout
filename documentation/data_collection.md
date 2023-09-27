@@ -16,12 +16,17 @@ where $a^{(p)}_{(j,k),i,t} \in \{-\Delta_p, 0, \Delta_p\}$ indicates the change 
 Given (\ref{eq:action_def}), the system model (\ref{eq:dynamics_def}) can be stated more explicitly as
 
 ```math
-w_{t+1} \sim P(\cdot \mid s_t, a_t) \\
-l_{i,t+1} = \lambda_i(t+1,w_{t+1}) i \in \mathscr{S} \\
-d_{i,t+1} = \alpha_i(s_{t},a_t, w_{t+1}) i \in \mathscr{S} \\
-p_{(j,k),i,t+1} = p_{(j,k),i,t} + a^{(p)}_{(j,k),i,t}  i \in \mathscr{S}, (j,k) \in \mathcal{E}\\
-b_{i,t+1} = b_{i,t} + a^{(p)}_{i,t}   i \in \mathscr{S}\\
+w_{t+1} \sim P(\cdot \mid s_t, a_t) 
+
+l_{i,t+1} = \lambda_i(t+1,w_{t+1}) i \in \mathscr{S} 
+
+d_{i,t+1} = \alpha_i(s_{t},a_t, w_{t+1}) i \in \mathscr{S} 
+
+p_{(j,k),i,t+1} = p_{(j,k),i,t} + a^{(p)}_{(j,k),i,t}  i \in \mathscr{S}, (j,k) \in \mathcal{E}
+
+b_{i,t+1} = b_{i,t} + a^{(p)}_{i,t}   i \in \mathscr{S}
+
 c_{j,t+1} = c_{j,t} + a^{(c)}_{j,t}  k \in \mathcal{V}
 ```
 
-where $t=1,2,\hdots$, $w_{t+1} \sim P(\cdot \mid s_t, a_t)$ denotes that $w_{t+1}$ is sampled from $P$, and $\alpha_i$ is a function that models the response time of service $S_i$.
+where $t=1,2,...$, $w_{t+1} \sim P(\cdot \mid s_t, a_t)$ denotes that $w_{t+1}$ is sampled from $P$, and $\alpha_i$ is a function that models the response time of service $S_i$.
