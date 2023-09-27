@@ -7,3 +7,9 @@ Since we use supervised learning to learn the system model, we can divide the co
 <p align="center">
 <img src="https://github.com/foroughsh/online_policy_adaptation_using_rollout/blob/main/documentation/usecase_graph%20(3).png" width="500"/>
 </p>
+
+The following figure shows the example file with only one service. All the metrics collected in this file are from the application layer, however, we can collect features from the OS layer and orchestration layer too. In this file the values in the red box are the feature set and the values in the black box are the QoS metrics related to the response time of service 1.
+
+<p align="center">
+<img src="https://github.com/foroughsh/online_policy_adaptation_using_rollout/blob/main/documentation/data_structure.png" width="500"/>
+</p>
