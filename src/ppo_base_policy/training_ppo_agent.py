@@ -11,8 +11,8 @@ import sys
 import argparse
 
 ########## To train the agent for different scenarios, just import the environment for that scenario.
-# from scenario_2_env.env.routing_env import RoutingEnv
-from scenario_3_env.env.routing_env import RoutingEnv
+# Please note that for when we load the gym env in the main function we need to revise the version numbre based on the scenario number.
+from ppo_base_policy.scenario_3_env.routing_env import RoutingEnv
 
 class CustomCallback(BaseCallback):
     """
@@ -116,72 +116,68 @@ class CustomCallback(BaseCallback):
         pass
 
 if __name__ == '__main__':
-    eval_env = gym.make("routing-env-v2")
-    env = gym.make("routing-env-v2")
+
+    # For other senarios the version of the environment is different.
+    eval_env = gym.make("routing-env-v3")
+    env = gym.make("routing-env-v3")
     env = Monitor(env)
     env.reset()
 
     action_masks = get_action_masks(env)
-    print("Action mask: ", action_masks)
 
     args = sys.argv
 
+    parser = argparse.ArgumentParser(description='Please check the code for options!')
+    parser.add_argument("--seed", type=int, default=83)
+    parser.add_argument("--target_path_for_models", type=str, default="../../trained_models/scenario_2/")
+    parser.add_argument("--target_path_to_save_results", type=str, default="../../artifacts/scenario_2/")
+    parser.add_argument("--num_neurons_per_hidden_layer", type=int, default=128)
+    parser.add_argument("--num_layers", type=int, default=3)
+    parser.add_argument("--steps_between_updates", type=int, default=512)
+    parser.add_argument("--learning_rate", type=float, default=0.0005)
+    parser.add_argument("--batch_size", type=int, default=64)
+    parser.add_argument("--device", type=str, default="cpu")
+    parser.add_argument("--gamma", type=float, default=0.99)
+    parser.add_argument("--num_training_timesteps", type=int, default=1000000)
+    parser.add_argument("--verbose", type=int, default=0)
+    parser.add_argument("--ent_coef", type=float, default=0.05)
+    parser.add_argument("--clip_range", type=float, default=0.2)
 
-    if (len(args) > 1):
-        parser = argparse.ArgumentParser(description='Please check the code for options!')
-        parser.add_argument("--seed", type=int, default=83)
-        parser.add_argument("--target_path_for_models", type=str, default="../../trained_models/scenario_2/")
-        parser.add_argument("--target_path_to_save_results", type=str, default="../../artifacts/scenario_2/")
-        parser.add_argument("--num_neurons_per_hidden_layer", type=int, default=128)
-        parser.add_argument("--num_layers", type=int, default=3)
-        parser.add_argument("--steps_between_updates", type=int, default=512)
-        parser.add_argument("--learning_rate", type=float, default=0.0005)
-        parser.add_argument("--batch_size", type=int, default=64)
-        parser.add_argument("--device", type=str, default="cpu")
-        parser.add_argument("--gamma", type=float, default=0.99)
-        parser.add_argument("--num_training_timesteps", type=int, default=1000000)
-        parser.add_argument("--step", default=100)
-        parser.add_argument("--gamma", type=float, default=0.99)
-        parser.add_argument("--num_training_timesteps", type=int, default=1000000)
-        parser.add_argument("--verbose", type=int, default=0)
-        parser.add_argument("--ent_coef", type=float, default=0.05)
-        parser.add_argument("--clip_range", type=float, default=0.2)
+    args = parser.parse_args()
 
-        args = parser.parse_args()
+    path_to_save_results = args.target_path_for_models
+    path_to_save_models = args.target_path_to_save_results
 
-        path_to_save_results = args.target_path_for_models
-        path_to_save_models = args.target_path_to_save_results
+    seed = args.seed
+    num_neurons_per_hidden_layer = args.num_neurons_per_hidden_layer
+    num_layers = args.num_layers
+    steps_between_updates = args.steps_between_updates
+    learning_rate = args.learning_rate
+    batch_size = args.batch_size
+    device = args.device
+    gamma = args.gamma
+    num_training_timesteps = args.num_training_timesteps
+    verbose = args.verbose
+    ent_coef = args.ent_coef
+    clip_range = args.clip_range
 
-        seed = args.seed
-        num_neurons_per_hidden_layer = args.num_neurons_per_hidden_layer
-        num_layers = args.num_layers
-        steps_between_updates = args.steps_between_updates
-        learning_rate = args.learning_rate
-        batch_size = args.batch_size
-        device = args.device
-        gamma = args.gamma
-        num_training_timesteps = args.num_training_timesteps
-        verbose = args.verbose
-        ent_coef = args.ent_coef
-        clip_range = args.clip_range
-    else:
-        print(
-            "Please enter the seed and other arguments. The list of options are as the following:\n"
-            "\t--seed 83\n"
-            "\t--target_path_for_models ../../trained_models/scenario_2/\n"
-            "\t--target_path_to_save_results ../../artifacts/scenario_2/\n"
-            "\t--num_neurons_per_hidden_layer 128\n"
-            "\t--num_layers 3\n"
-            "\t--steps_between_updates 512\n"
-            "\t--learning_rate 0.0005\n"
-            "\t--batch_size 64\n"
-            "\t--device cpu\n"
-            "\t--gamma 0.99\n"
-            "\t--num_training_timesteps 1000000"
-            "\t--verbose 0\n"
-            "\t--ent_coef 0.05\n"
-            "\t--clip_range 0.2"
-        )
+    print(
+        "You can update the parameters by invoking function with the following options: \n"
+        "\t--seed 83\n"
+        "\t--target_path_for_models ../../trained_models/scenario_2/\n"
+        "\t--target_path_to_save_results ../../artifacts/scenario_2/\n"
+        "\t--num_neurons_per_hidden_layer 128\n"
+        "\t--num_layers 3\n"
+        "\t--steps_between_updates 512\n"
+        "\t--learning_rate 0.0005\n"
+        "\t--batch_size 64\n"
+        "\t--device cpu\n"
+        "\t--gamma 0.99\n"
+        "\t--num_training_timesteps 1000000"
+        "\t--verbose 0\n"
+        "\t--ent_coef 0.05\n"
+        "\t--clip_range 0.2"
+    )
 
     # Hparams
     policy_kwargs = dict(net_arch=[num_neurons_per_hidden_layer] * num_layers)
