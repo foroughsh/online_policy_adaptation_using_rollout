@@ -6,16 +6,19 @@ import time
 import math
 import numpy as np
 import numpy.typing as npt
-from vi import value_iteration, greedy_policy
-from policy_iteration_scenario_1 import policy_iteration, policy_evaluation
-from rollouts_scenario_1 import exact_one_step_rollout_policy, monte_carlo_policy_evaluation, \
+from sb3_contrib import MaskablePPO
+from sb3_contrib.common.maskable.utils import get_action_masks
+from online_policy_adaptation_using_rollout.algorithms.value_iteration_scenario_1 import value_iteration, greedy_policy
+from online_policy_adaptation_using_rollout.algorithms.policy_iteration_scenario_1 import policy_iteration, \
+    policy_evaluation
+from online_policy_adaptation_using_rollout.algorithms.rollouts_scenario_1 import exact_one_step_rollout_policy, \
+    monte_carlo_policy_evaluation, \
     monte_carlo_l_step_rollout_policy, monte_carlo_l_step_multiagent_rollout_policy
-from system_model_scenario_1 import reward_tensor, transition_tensor, transition_function, state_space, \
+from online_policy_adaptation_using_rollout.system_model.system_model_scenario_1 import reward_tensor, \
+    transition_tensor, transition_function, state_space, \
     action_space, services, edges, nodes, precompute_delays, reward_function, convert_env_a_to_dp_a, \
     convert_dp_s_to_env_s
 from sc1.rollout.two_services_env.env.routing_env import RoutingEnv
-from sb3_contrib import MaskablePPO
-from sb3_contrib.common.maskable.utils import get_action_masks
 import random
 
 

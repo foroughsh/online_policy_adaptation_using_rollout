@@ -10,7 +10,16 @@ The following figure shows our approach for policy adaptation in networked syste
 
 ## Requirements
 
-TODO
+- `gym` and `gymnasium`: for creating the RL environments
+- `joblib`: for loading/exporting random forest regressor models
+- `sb3-contrib`: for reinforcement learning agents (Maskable PPO)
+- `scikit-learn`: for random forest regression
+- `scipy`: for random forest regression
+- `stable-baselines3`: for reinforcement learning agents (PPO)
+- `torch` and `torchvision`: for neural network training
+- `matplotlib`: for plotting
+- `pandas`: for data wrangling
+- `requests`: for making HTTP requests
 
 ## Development Requirements
 
