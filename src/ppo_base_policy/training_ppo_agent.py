@@ -145,8 +145,8 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    path_to_save_results = args.target_path_for_models
-    path_to_save_models = args.target_path_to_save_results
+    path_to_save_results = args.target_path_to_save_results
+    path_to_save_models = args.target_path_for_models
 
     seed = args.seed
     num_neurons_per_hidden_layer = args.num_neurons_per_hidden_layer
