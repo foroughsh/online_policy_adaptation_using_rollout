@@ -9,8 +9,8 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description='Please check the code for options!')
     parser.add_argument("--seed", type=int, default=83)
-    parser.add_argument("--target_path_for_models", type=str, default="../trained_models/scenario_2/")
-    parser.add_argument("--target_path_to_save_results", type=str, default="../artifacts/scenario_2/")
+    parser.add_argument("--target_path_for_models", type=str, default="../trained_models/scenario_3/")
+    parser.add_argument("--target_path_to_save_results", type=str, default="../artifacts/scenario_3/")
     parser.add_argument("--num_neurons_per_hidden_layer", type=int, default=128)
     parser.add_argument("--num_layers", type=int, default=3)
     parser.add_argument("--steps_between_updates", type=int, default=512)
@@ -22,9 +22,9 @@ if __name__ == '__main__':
     parser.add_argument("--verbose", type=int, default=0)
     parser.add_argument("--ent_coef", type=float, default=0.05)
     parser.add_argument("--clip_range", type=float, default=0.2)
-    parser.add_argument("--path_to_system_model", type=str, default="../trained_models/scenario_2")
-    parser.add_argument("--environment_name", type=str, default="routing-env-v2")
-    parser.add_argument("--last_iteration", type=int, default=4)
+    parser.add_argument("--path_to_system_model", type=str, default="../trained_models/scenario_3")
+    parser.add_argument("--environment_name", type=str, default="routing-env-v3")
+    parser.add_argument("--last_iterarion", type=int, default=4)
 
     args = parser.parse_args()
 
@@ -50,8 +50,8 @@ if __name__ == '__main__':
     print(
         "You can update the parameters by invoking function with the following options: \n"
         "\t--seed 83\n"
-        "\t--target_path_for_models ../../trained_models/scenario_2/\n"
-        "\t--target_path_to_save_results ../../artifacts/scenario_2/\n"
+        "\t--target_path_for_models ../../trained_models/scenario_3/\n"
+        "\t--target_path_to_save_results ../../artifacts/scenario_3/\n"
         "\t--num_neurons_per_hidden_layer 128\n"
         "\t--num_layers 3\n"
         "\t--steps_between_updates 512\n"
@@ -63,9 +63,9 @@ if __name__ == '__main__':
         "\t--verbose 0\n"
         "\t--ent_coef 0.05\n"
         "\t--clip_range 0.2"
-        "\t--path_to_system_model ../../trained_models/scenario_2"
-        "\t--environment_name routing-env-v2"
-        "\t--last_iteration 4"
+        "\t--path_to_system_model ../../trained_models/scenario_3"
+        "\t--environment_name routing-env-v3"
+        "--last_iterarion 4"
     )
 
     ####### Training the base PPO policy
@@ -85,7 +85,8 @@ if __name__ == '__main__':
     # training_obj.train_ppo_base()
 
     ####### Evaluation of the base policy in the environment before change
-    # evaluation_obj = EvaluateBasePolicy(path_to_base_model=path_to_save_models, model_name="self_routing_"+str(seed)+"_4.zip",
+    # evaluation_obj = EvaluateBasePolicy(path_to_base_model=path_to_save_models, model_name="self_routing_"+str(seed)
+    #                                       + "_" + str(last_iteration) + ".zip",
     #                                     target_path_to_save_evalaution_results=path_to_save_results, episode_lenth=8,
     #                                     env_name=environment_name, path_to_system_model=path_to_system_model + "system_model.joblib")
     #
@@ -95,7 +96,7 @@ if __name__ == '__main__':
 
     ####### Evaluation of the base policy in the new environment before change
     # evaluation_obj_new = EvaluateBasePolicy(path_to_base_model=path_to_save_models,
-    #                                     model_name="self_routing_" + str(seed) + "_" + str(last_iteration) + ".zip",
+    #                                     model_name="self_routing_" + str(seed) + "_" + str(last_iteration)+".zip",
     #                                     target_path_to_save_evalaution_results=path_to_save_results, episode_lenth=8,
     #                                     env_name=environment_name,
     #                                     path_to_system_model=path_to_system_model + "new_system_model.joblib")
@@ -117,7 +118,7 @@ if __name__ == '__main__':
 
     ####### Evaluatiton of the offline retrained in the new environment
     # evaluation_obj_new_offline = EvaluateBasePolicy(path_to_base_model=path_to_save_models,
-    #                                         model_name="self_routing_new_" + str(seed) + "_" + str(last_iteration) + ".zip",
+    #                                         model_name="self_routing_new_" + str(seed)  + "_" + str(last_iteration) + ".zip",
     #                                         target_path_to_save_evalaution_results=path_to_save_results,
     #                                         episode_lenth=8,
     #                                         env_name=environment_name,
@@ -129,7 +130,7 @@ if __name__ == '__main__':
 
     ####### Evaluatiton of the offline retrained in the new environment
     # evaluation_obj_new = EvaluateBasePolicy(path_to_base_model=path_to_save_models,
-    #                                         model_name="self_routing_new_" + str(seed) + "_" + str(last_iteration) + ".zip",
+    #                                         model_name="self_routing_new_" + str(seed)  + "_" + str(last_iteration) + ".zip",
     #                                         target_path_to_save_evalaution_results=path_to_save_results,
     #                                         episode_lenth=8,
     #                                         env_name=environment_name,
