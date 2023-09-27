@@ -175,6 +175,12 @@ class RoutingEnv(gym.Env):
         self.middleware.set_state(p1, p2, cpu1, cpu2)
         return self.s
 
+    def get_episode_counter(self):
+        return self.t
+
+    def set_episode_counter(self, t):
+        self.t = t
+
 # env = RoutingEnv()
 # for i in range(0,10):
 #     print("Step ----> ", i)

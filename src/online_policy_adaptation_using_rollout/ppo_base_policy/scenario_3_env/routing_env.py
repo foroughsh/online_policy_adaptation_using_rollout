@@ -133,6 +133,12 @@ class RoutingEnv(gym.Env):
     def get_state(self):
         return self.s
 
+    def get_episode_counter(self):
+        return self.t
+
+    def set_episode_counter(self, t):
+        self.t = t
+
 # env = RoutingEnv()
 # env.set_state(25, 0.4, 1)
 # # for i in range(0,10):
