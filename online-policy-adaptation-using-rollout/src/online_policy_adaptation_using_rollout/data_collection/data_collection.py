@@ -397,7 +397,8 @@ if __name__ == "__main__":
     if (path.is_file()):
         os.remove(artificas + "data.csv")
     with open(artificas + "data.csv", 'w') as file:
-        file.write("expected_l1,expected_l2,l1,l2,b1,p11,c1,cl1,d1,d1_std,d11,d12,d11_std,d12_st,drop1,d1_99,d1_90\n")
+        file.write("expected_l1,expected_l2,l1,l2,b1,b2,p11,p21,c1,c2,cl1,cl2,d1,d1_std,d11,d12,d11_std,d12_st,drop1,d1_99,d1_90,"
+                   "d2,d2_std,d21,d22,d21_std,d22_st,drop2,d2_99,d2_90\n")
 
     time_step = 5
 

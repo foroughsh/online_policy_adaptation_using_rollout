@@ -3,7 +3,6 @@ import asyncio
 import time
 import random
 import aiohttp
-# import pika
 import numpy as np
 import sys
 
