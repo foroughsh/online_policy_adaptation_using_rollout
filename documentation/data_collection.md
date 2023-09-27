@@ -11,21 +11,26 @@ where $f$ is a Markovian system model, $w_t \in \mathcal{W}$ is a random disturb
 a_t \triangleq ((a^{(p)}_{(j,k),i,t}, a^{(b)}_{i,t}, a^{(c)}_{j,t}))_{i \in \mathscr{S}, (j,k) \in \mathcal{E}, k,j \in \mathcal{V}}
 ```
 
-where $a^{(p)}_{(j,k),i,t} \in \{-\Delta_p, 0, \Delta_p\}$ indicates the change in routing weight for edge $(j,k)$ and service $S_i$, $a^{(b)}_{i,t} \in \{-\Delta_b, 0, \Delta_b\}$ indicates the change in blocking rate for service $S_i$, and $a^{(c)}_{j,t} \in \{-\Delta_c,0,\Delta_c\}$ indicates the change in allocated CPU cores for node $j$.
+where $$a^{(p)}_{(j,k),i,t} \in \{-\Delta_p, 0, \Delta_p\}$$ indicates the change in routing weight for edge $(j,k)$ and service $S_i$, $$a^{(b)}_{i,t} \in \{-\Delta_b, 0, \Delta_b\}$$ indicates the change in blocking rate for service $S_i$, and $a^{(c)}_{j,t} \in \{-\Delta_c,0,\Delta_c\}$ indicates the change in allocated CPU cores for node $j$.
 
 Given (\ref{eq:action_def}), the system model (\ref{eq:dynamics_def}) can be stated more explicitly as
 
 ```math
 w_{t+1} \sim P(\cdot \mid s_t, a_t) \newline
-
+```
+```math
 l_{i,t+1} = \lambda_i(t+1,w_{t+1}) i \in \mathscr{S}  \newline
-
+```
+```math
 d_{i,t+1} = \alpha_i(s_{t},a_t, w_{t+1}) i \in \mathscr{S}  \newline
-
+```
+```math
 p_{(j,k),i,t+1} = p_{(j,k),i,t} + a^{(p)}_{(j,k),i,t}  i \in \mathscr{S}, (j,k) \in \mathcal{E} \newline
-
+```
+```math
 b_{i,t+1} = b_{i,t} + a^{(p)}_{i,t}   i \in \mathscr{S} \newline
-
+```
+```math
 c_{j,t+1} = c_{j,t} + a^{(c)}_{j,t}  k \in \mathcal{V} 
 ```
 
