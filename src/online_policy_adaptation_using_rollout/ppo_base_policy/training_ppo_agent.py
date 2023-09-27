@@ -19,7 +19,7 @@ class CustomCallback(BaseCallback):
 
     :param verbose: (int) Verbosity level 0: not output 1: info 2: debug
     """
-    def __init__(self, seed: int, model, env, path_to_models, path_to_results, verbose=0, eval_every: int = 200):
+    def __init__(self, seed: int, model, env, path_to_models, path_to_results, policy_name="self_routing_", verbose=0, eval_every: int = 200):
         super(CustomCallback, self).__init__(verbose)
         self.iter = 0
         self.eval_every = eval_every
@@ -28,6 +28,7 @@ class CustomCallback(BaseCallback):
         self.path_to_models = path_to_models
         self.path_to_results = path_to_results
         self.model = model
+        self.policy_name = policy_name
 
     def _on_training_start(self) -> None:
         """
@@ -105,7 +106,7 @@ class CustomCallback(BaseCallback):
             print(f"[EVAL] Training time: {end-start}")
 
         if self.iter % (self.eval_every*1) == 0:
-            self.model.save(self.path_to_models + "self_routing_" + str(self.seed)+"_"+ str(self.iter))
+            self.model.save(self.path_to_models + self.policy_name + str(self.seed)+"_"+ str(self.iter))
         self.iter += 1
 
     def _on_training_end(self) -> None:
@@ -118,7 +119,7 @@ class PPOBase():
 
     def __init__(self,environment_name, path_to_system_model, num_neurons_per_hidden_layer, num_layers, seed, path_to_save_models,
                  path_to_save_results, verbose, steps_between_updates, batch_size, learning_rate, gamma, ent_coef,
-                 clip_range, num_training_timesteps, device):
+                 clip_range, num_training_timesteps, device, policy_name="self_routing"):
         self.environment_name = environment_name
         self.path_to_system_model = path_to_system_model
         self.num_neurons_per_hidden_layer = num_neurons_per_hidden_layer
@@ -135,6 +136,7 @@ class PPOBase():
         self.clip_range = clip_range
         self.num_training_timesteps = num_training_timesteps
         self.device = device
+        self.policy_name = policy_name
 
     def train_ppo_base(self):
         # For other senarios the version of the environment is different.
@@ -159,7 +161,7 @@ class PPOBase():
                     device=self.device, gamma=self.gamma, ent_coef=self.ent_coef, clip_range=self.clip_range)
 
         cb = CustomCallback(seed=self.seed, env=eval_env, model=model, path_to_models=self.path_to_save_models,
-                            path_to_results=self.path_to_save_results, eval_every=2)
+                            path_to_results=self.path_to_save_results, eval_every=2, policy_name=self.policy_name)
 
         start = time.time()
         model.learn(total_timesteps=self.num_training_timesteps, callback=cb)

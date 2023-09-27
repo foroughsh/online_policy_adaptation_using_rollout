@@ -40,7 +40,7 @@ class RoutingMiddleWare():
 
     def __init__(self, system_model_path):
         self.path = system_model_path
-        self.delay_model = joblib.load(self.path + "delays_RF_model.joblib")
+        self.delay_model = joblib.load(self.path)
         self.state_size = 4
         self.state = np.zeros(self.state_size, dtype=float)
         ######actions#######################

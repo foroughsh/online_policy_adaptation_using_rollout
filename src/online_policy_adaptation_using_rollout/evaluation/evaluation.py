@@ -16,7 +16,7 @@ class EvaluateBasePolicy():
         self.env_name = env_name
         self.path_to_system_model = path_to_system_model
 
-    def evaluate(self):
+    def evaluate_with_base_or_offline(self):
         env = gym.make(self.env_name, path_to_system_model=self.path_to_system_model)
         env = Monitor(env)
 
@@ -39,3 +39,5 @@ class EvaluateBasePolicy():
             rewards.append(reward)
             infos.append(info)
         return rewards, infos
+
+    # def evaluate_with_rollout(self):

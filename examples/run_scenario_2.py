@@ -66,17 +66,61 @@ if __name__ == '__main__':
     )
 
     ####### Training the base PPO policy
-    # training_obj = PPOBase(environment_name, path_to_system_model, num_neurons_per_hidden_layer, num_layers, seed, path_to_save_models,
-    #              path_to_save_results, verbose, steps_between_updates, batch_size, learning_rate, gamma, ent_coef,
-    #              clip_range, num_training_timesteps, device)
+    # training_obj = PPOBase(environment_name, path_to_system_model + "system_model.joblib", num_neurons_per_hidden_layer,
+    # num_layers, seed, path_to_save_models,
+    # path_to_save_results, verbose, steps_between_updates, batch_size, learning_rate, gamma, ent_coef,
+    # clip_range, num_training_timesteps, device)
     #
     # training_obj.train_ppo_base()
 
+    ####### Offline training the base PPO policy
+    training_obj = PPOBase(environment_name, path_to_system_model + "new_system_model.joblib", num_neurons_per_hidden_layer,
+    num_layers, seed, path_to_save_models,
+    path_to_save_results, verbose, steps_between_updates, batch_size, learning_rate, gamma, ent_coef,
+    clip_range, num_training_timesteps, device,policy_name="self_routing_new_")
+
+    training_obj.train_ppo_base()
+
     ####### Evaluation of the base policy in the environment before change
-    evaluation_obj = EvaluateBasePolicy(path_to_base_model=path_to_save_models, model_name="self_routing_"+str(seed)+"_4.zip",
-                                        target_path_to_save_evalaution_results=path_to_save_results, episode_lenth=8,
-                                        env_name=environment_name, path_to_system_model=path_to_system_model)
+    # evaluation_obj = EvaluateBasePolicy(path_to_base_model=path_to_save_models, model_name="self_routing_"+str(seed)+"_4.zip",
+    #                                     target_path_to_save_evalaution_results=path_to_save_results, episode_lenth=8,
+    #                                     env_name=environment_name, path_to_system_model=path_to_system_model + "system_model.joblib")
+    #
+    # rewards, infos = evaluation_obj.evaluate_with_base_or_offline()
+    #
+    # print(rewards, infos)
 
-    rewards, infos = evaluation_obj.evaluate()
+    ####### Evaluation of the base policy in the new environment before change
+    # evaluation_obj_new = EvaluateBasePolicy(path_to_base_model=path_to_save_models,
+    #                                     model_name="self_routing_" + str(seed) + "_4.zip",
+    #                                     target_path_to_save_evalaution_results=path_to_save_results, episode_lenth=8,
+    #                                     env_name=environment_name,
+    #                                     path_to_system_model=path_to_system_model + "new_system_model.joblib")
+    #
+    # rewards_new, infos_new = evaluation_obj_new.evaluate_with_base_or_offline()
+    #
+    # print(rewards_new, infos_new)
 
-    print(rewards, infos)
+    ####### Evaluatiton of the offline retrained in the new environment
+    # evaluation_obj_new_offline = EvaluateBasePolicy(path_to_base_model=path_to_save_models,
+    #                                         model_name="self_routing_new_" + str(seed) + "_4.zip",
+    #                                         target_path_to_save_evalaution_results=path_to_save_results,
+    #                                         episode_lenth=8,
+    #                                         env_name=environment_name,
+    #                                         path_to_system_model=path_to_system_model + "new_system_model.joblib")
+    #
+    # rewards_new_offline, infos_new_offline = evaluation_obj_new_offline.evaluate_with_base_or_offline()
+    #
+    # print(rewards_new_offline, infos_new_offline)
+
+    ####### Evaluatiton of the offline retrained in the new environment
+    evaluation_obj_new = EvaluateBasePolicy(path_to_base_model=path_to_save_models,
+                                            model_name="self_routing_new_" + str(seed) + "_4.zip",
+                                            target_path_to_save_evalaution_results=path_to_save_results,
+                                            episode_lenth=8,
+                                            env_name=environment_name,
+                                            path_to_system_model=path_to_system_model + "new_system_model.joblib")
+
+    rewards_new, infos_new = evaluation_obj_new.evaluate_with_base_or_offline()
+
+    print(rewards_new, infos_new)
