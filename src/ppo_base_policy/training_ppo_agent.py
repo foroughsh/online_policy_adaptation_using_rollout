@@ -3,13 +3,16 @@ import torch
 import numpy as np
 from stable_baselines3.common.monitor import Monitor
 import gym
-from two_services_env.env.routing_env import RoutingEnv
 from stable_baselines3.common.callbacks import BaseCallback
 import time
 from sb3_contrib import MaskablePPO
 from sb3_contrib.common.maskable.utils import get_action_masks
 import sys
 import argparse
+
+########## To train the agent for different scenarios, just import the environment for that scenario.
+# from scenario_2_env.env.routing_env import RoutingEnv
+from scenario_3_env.env.routing_env import RoutingEnv
 
 class CustomCallback(BaseCallback):
     """
