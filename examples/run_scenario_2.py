@@ -1,6 +1,7 @@
 import sys
 import argparse
 from online_policy_adaptation_using_rollout.ppo_base_policy.training_ppo_agent import PPOBase
+from online_policy_adaptation_using_rollout.evaluation.evaluation_using_base_policy import EvaluateBasePolicy
 
 if __name__ == '__main__':
 
@@ -65,10 +66,17 @@ if __name__ == '__main__':
     )
 
     ####### Training the base PPO policy
-    training_obj = PPOBase(environment_name, path_to_system_model, num_neurons_per_hidden_layer, num_layers, seed, path_to_save_models,
-                 path_to_save_results, verbose, steps_between_updates, batch_size, learning_rate, gamma, ent_coef,
-                 clip_range, num_training_timesteps, device)
-
-    training_obj.train_ppo_base()
+    # training_obj = PPOBase(environment_name, path_to_system_model, num_neurons_per_hidden_layer, num_layers, seed, path_to_save_models,
+    #              path_to_save_results, verbose, steps_between_updates, batch_size, learning_rate, gamma, ent_coef,
+    #              clip_range, num_training_timesteps, device)
+    #
+    # training_obj.train_ppo_base()
 
     ####### Evaluation of the base policy in the environment before change
+    evaluation_obj = EvaluateBasePolicy(path_to_base_model=path_to_save_models, model_name="self_routing_"+str(seed)+"_4.zip",
+                                        target_path_to_save_evalaution_results=path_to_save_results, episode_lenth=8,
+                                        env_name=environment_name, path_to_system_model=path_to_system_model)
+
+    rewards, infos = evaluation_obj.evaluate()
+
+    print(rewards, infos)
