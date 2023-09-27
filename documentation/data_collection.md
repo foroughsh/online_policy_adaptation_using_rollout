@@ -52,11 +52,11 @@ where $t=1,2,...$, $w_{t+1} \sim P(\cdot \mid s_t, a_t)$ denotes that $w_{t+1}$ 
 Considering the state values and actions (configuration parameters), we load the application with the specified values of load depending on the scenario change in the configuration of the system. After applying the change in the control action, we wait until the settling time of the action has elapsed. This time for the routing action is a fraction of a second and for the scaling, we consider 30 seconds. We learn the system state over the monitoring time that we consider 5 seconds in all scenarios. In the following figure, we show the relation between the action settling time and monitoring time.  
 
 <p align="center">
-<img src="https://github.com/foroughsh/online_policy_adaptation_using_rollout/blob/main/documentation/time_step%20(1).png" width="500"/>
+<img src="https://github.com/foroughsh/online_policy_adaptation_using_rollout/blob/main/documentation/images/time_step.png" width="500"/>
 </p>
 
 The main reason is that during the settling time, the response time is not stable and stationary. As it is shown in the following image.
 
 <p align="center">
-<img src="https://github.com/foroughsh/online_policy_adaptation_using_rollout/blob/main/documentation/settling_time%20(1).png" width="500"/>
+<img src="https://github.com/foroughsh/online_policy_adaptation_using_rollout/blob/main/documentation/images/settling_time.png" width="500"/>
 </p>
