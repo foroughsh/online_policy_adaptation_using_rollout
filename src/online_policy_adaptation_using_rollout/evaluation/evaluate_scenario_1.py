@@ -18,7 +18,7 @@ from online_policy_adaptation_using_rollout.system_model.system_model_scenario_1
     transition_tensor, transition_function, state_space, \
     action_space, services, edges, nodes, precompute_delays, reward_function, convert_env_a_to_dp_a, \
     convert_dp_s_to_env_s
-from sc1.rollout.two_services_env.env.routing_env import RoutingEnv
+from online_policy_adaptation_using_rollout.ppo_base_policy.scenario_1_env.routing_env import RoutingEnv
 import random
 
 
