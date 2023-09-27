@@ -49,7 +49,21 @@ $ pip install -r requirements_dev.txt
 
 ## Run Experiments
 
-TODO
+### Scenario 1
+
+```bash
+cd examples; python run_scenario_1.py
+```
+
+### Scenario 2
+```bash
+cd examples; python run_scenario_2.py
+```
+
+### Scenario 3
+```bash
+cd examples; python run_scenario_3.py
+```
 
 ## Copyright and license
 
