@@ -32,4 +32,4 @@ To set up the testbed, we need to take the following steps:
 
 (4) Now the testbed is ready!
 
-For more details please check https://github.com/foroughsh/Framework-for-dynamically-meeting-performanc-objectives
+For more details please check https://github.com/foroughsh/A_framework_for_meeting_MO_TNSM2023
